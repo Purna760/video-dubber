@@ -1,4 +1,5 @@
 flask
+gunicorn
 faster-whisper
 ffmpeg-python
 translate
