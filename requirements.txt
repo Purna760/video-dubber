@@ -1,0 +1,8 @@
+flask
+faster-whisper
+ffmpeg-python
+translate
+gtts
+pydub
+pysrt
+moviepy
