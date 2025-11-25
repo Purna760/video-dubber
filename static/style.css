@@ -1,0 +1,33 @@
+body {
+  background: #020617;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 40px;
+}
+
+form {
+  background: #111827;
+  padding: 20px;
+  border-radius: 15px;
+  width: 350px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+button {
+  background: #22c55e;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+input, select {
+  padding: 8px;
+  border-radius: 8px;
+  border: none;
+}
