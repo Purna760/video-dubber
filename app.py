@@ -2,14 +2,15 @@ import os
 import math
 import ffmpeg
 import pysrt
-import types
 import sys
+import types
 
-# ---- create a dummy pyaudio module so that pydub doesn't crash ----
-# pydub sometimes tries to import pyaudio for playback; we don't need playback,
-# only file loading/saving, so we stub it out.
-if "pyaudio" not in sys.modules:
-    sys.modules["pyaudio"] = types.ModuleType("pyaudio")
+# ---- Stub pyaudioop so pydub can import it without error ----
+# Newer pydub versions do: "import pyaudioop as audioop".
+# We don't need its functionality (playback/analysis), only file I/O,
+# so a dummy module is enough.
+if "pyaudioop" not in sys.modules:
+    sys.modules["pyaudioop"] = types.ModuleType("pyaudioop")
 
 from flask import Flask, render_template, request, send_file
 from faster_whisper import WhisperModel
@@ -54,6 +55,7 @@ def dub_video():
     video = request.files["video"]
     target_lang = request.form.get("language", "ta")
 
+    # Save uploaded video
     input_video_path = os.path.join(UPLOAD_FOLDER, video.filename)
     video.save(input_video_path)
 
@@ -74,7 +76,7 @@ def dub_video():
     model = WhisperModel("small")
     segments, info = model.transcribe(extracted_audio)
     segments = list(segments)
-    source_lang = info.language
+    source_lang = info.language  # e.g. "en"
 
     # 3. Create original subtitle file
     text = ""
@@ -126,5 +128,5 @@ def dub_video():
 
 
 if __name__ == "__main__":
-    # For local debugging only; Render will use gunicorn
+    # Local debug only – Render uses gunicorn
     app.run(host="0.0.0.0", port=5000, debug=True)
